@@ -1,0 +1,178 @@
+/* eXpand — layout overrides for x.com */
+
+:root {
+  --expand-width: 900px;
+  --expand-nav-width: 88px;
+}
+
+/* ---------- Center column ---------- */
+/* --expand-col caps the requested width at what the window can actually show */
+html[data-expand-on] {
+  --expand-col: min(var(--expand-width), calc(100vw - var(--expand-nav-width) - 24px));
+}
+html[data-expand-on] [data-testid="primaryColumn"] {
+  width: var(--expand-col) !important;
+  max-width: var(--expand-col) !important;
+  flex-basis: var(--expand-col) !important;
+}
+html[data-expand-on] .expand-w {
+  max-width: var(--expand-col) !important;
+}
+html[data-expand-on] .expand-unclamp {
+  max-width: none !important;
+  width: auto !important;
+}
+html[data-expand-on] .expand-unclamp-main {
+  max-width: none !important;
+}
+
+/* Fill mode: the nav keeps only its rail and <main> takes everything else. */
+html[data-expand-fill] header[role="banner"] {
+  flex-grow: 0 !important;
+}
+html[data-expand-fill] main[role="main"] {
+  flex-grow: 1 !important;
+  width: 100% !important;
+  align-items: stretch !important;
+}
+html[data-expand-fill] .expand-unclamp {
+  width: 100% !important;
+}
+html[data-expand-fill] [data-testid="primaryColumn"] {
+  width: 100% !important;
+  max-width: none !important;
+  flex-basis: auto !important;
+}
+html[data-expand-fill] .expand-w {
+  max-width: none !important;
+}
+
+/* ---------- Left nav: icons only ---------- */
+/* The header keeps flex-grow so it shares leftover space with <main>; that is what
+   centers the layout. Only its inner rail gets the fixed width. */
+html[data-expand-left="icons"] header[role="banner"] {
+  flex-basis: var(--expand-nav-width) !important;
+}
+html[data-expand-left="icons"] header[role="banner"] > div,
+html[data-expand-left="icons"] header[role="banner"] > div > div,
+html[data-expand-left="icons"] header[role="banner"] > div > div > div {
+  width: var(--expand-nav-width) !important;
+  min-width: var(--expand-nav-width) !important;
+  max-width: var(--expand-nav-width) !important;
+}
+/* X keeps each nav link 259px wide (its wide-mode width) even inside the narrow
+   rail, so the invisible hit area reached into the timeline and stole clicks. */
+html[data-expand-left="icons"] header[role="banner"] nav[role="navigation"] :is(a[role="link"], button) {
+  width: auto !important;
+}
+/* nav item labels (the icon lives in the first child div, the text in a later one).
+   Items are <a role="link">, except "More", which is a <button>. */
+/* :not(:has(svg)) keeps the icon container, which also holds the unread badge span. */
+html[data-expand-left="icons"] header[role="banner"] nav[role="navigation"] :is(a[role="link"], button) > div > div:has(span):not(:has(svg)) {
+  display: none !important;
+}
+/* "Post" button becomes a round icon */
+html[data-expand-left="icons"] header[role="banner"] [data-testid="SideNav_NewTweet_Button"] {
+  width: 50px !important;
+  min-width: 50px !important;
+  height: 50px !important;
+  padding: 0 !important;
+  border-radius: 9999px !important;
+}
+html[data-expand-left="icons"] header[role="banner"] [data-testid="SideNav_NewTweet_Button"] span {
+  display: none !important;
+}
+/* At desktop widths X renders only the "Post" label, no icon, so draw the compose
+   glyph ourselves. difference-blend makes it black on the white button (dark themes)
+   and white on the black button (light theme). */
+html[data-expand-left="icons"] header[role="banner"] [data-testid="SideNav_NewTweet_Button"] > div {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+html[data-expand-left="icons"] header[role="banner"] [data-testid="SideNav_NewTweet_Button"] > div::after {
+  content: "";
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  mix-blend-mode: difference;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M23 3c-6.62-.1-10.38 2.421-13.05 6.03C7.29 12.61 6 17.331 6 22h2c0-1.007.07-2.012.19-3H12c4.1 0 7.48-3.082 7.94-7.054C22.79 10.147 23.17 6.359 23 3zm-7 8h-1.5v2H16c.63-.016 1.2-.08 1.72-.188C16.95 15.24 14.68 17 12 17H8.55c.57-2.512 1.57-4.851 3-6.78 2.16-2.912 5.29-4.911 9.45-5.187C20.95 8.079 19.9 11 16 11zM4 9V6H1V4h3V1h2v3h3v2H6v3H4z'/></svg>") center / contain no-repeat;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M23 3c-6.62-.1-10.38 2.421-13.05 6.03C7.29 12.61 6 17.331 6 22h2c0-1.007.07-2.012.19-3H12c4.1 0 7.48-3.082 7.94-7.054C22.79 10.147 23.17 6.359 23 3zm-7 8h-1.5v2H16c.63-.016 1.2-.08 1.72-.188C16.95 15.24 14.68 17 12 17H8.55c.57-2.512 1.57-4.851 3-6.78 2.16-2.912 5.29-4.911 9.45-5.187C20.95 8.079 19.9 11 16 11zM4 9V6H1V4h3V1h2v3h3v2H6v3H4z'/></svg>") center / contain no-repeat;
+}
+/* account switcher: avatar only */
+html[data-expand-left="icons"] header[role="banner"] [data-testid="SideNav_AccountSwitcher_Button"] > div:not(:first-child) {
+  display: none !important;
+}
+
+/* ---------- Right sidebar ---------- */
+html[data-expand-right="hide"] [data-testid="sidebarColumn"] {
+  display: none !important;
+}
+/* keep only the search box */
+html[data-expand-right="search"] [data-testid="sidebarColumn"] :is(
+  aside,
+  section,
+  nav,
+  [aria-label*="Trending"],
+  [aria-label*="Who to follow"],
+  [aria-label*="Premium"],
+  [aria-label*="Subscribe"],
+  [aria-label*="Relevant people"]
+) {
+  display: none !important;
+}
+
+/* ---------- Media ---------- */
+/* Portrait videos: width cap and aspect spacer, values set per element by content.js */
+.expand-video-pin {
+  max-width: var(--expand-vw) !important;
+}
+.expand-video-spacer {
+  padding-bottom: var(--expand-pb) !important;
+}
+/* ...and when we changed the shape, fill it, keeping the middle of the frame. */
+.expand-cropped video {
+  object-fit: cover !important;
+}
+/* Media scales with the column automatically; just make sure nothing re-clamps it. */
+html[data-expand-on] article [data-testid="tweetPhoto"],
+html[data-expand-on] article [data-testid="videoPlayer"],
+html[data-expand-on] article [data-testid="videoComponent"] {
+  max-width: none !important;
+}
+
+/* ---------- Declutter (html classes set from settings) ---------- */
+html.expand-hide-ads .expand-ad {
+  display: none !important;
+}
+/* the "What's happening?" composer at the top of Home */
+html.expand-hide-composer [data-testid="primaryColumn"] [aria-label="Home timeline"] > div > div:has([data-testid="tweetTextarea_0_label"]) {
+  display: none !important;
+}
+/* For you / Following / lists tab bar */
+html.expand-hide-tab-bar [data-testid="primaryColumn"] nav:has([data-testid="ScrollSnap-SwipeableList"]) {
+  display: none !important;
+}
+/* view counts in the action bar */
+html.expand-hide-views article [role="group"] a[href$="/analytics"] {
+  display: none !important;
+}
+/* reply / repost / like numbers (icons stay) */
+html.expand-hide-counts article [role="group"] :is([data-testid="reply"], [data-testid="retweet"], [data-testid="unretweet"], [data-testid="like"], [data-testid="unlike"]) [data-testid="app-text-transition-container"] {
+  display: none !important;
+}
+/* the Grok button on posts */
+html.expand-hide-grok-button article button[aria-label*="Grok"] {
+  display: none !important;
+}
+/* left nav items */
+html.expand-hide-nav-grok header nav a[href^="/i/grok"],
+html.expand-hide-nav-premium header nav a[href^="/i/premium"],
+html.expand-hide-nav-creator-studio header nav a[href^="/i/jf/creators"],
+html.expand-hide-nav-history header nav a[href^="/i/history"],
+html.expand-hide-nav-communities header nav a[href^="/i/communities"],
+html.expand-hide-nav-jobs header nav a[href^="/jobs"] {
+  display: none !important;
+}

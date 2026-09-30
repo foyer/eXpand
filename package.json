@@ -1,0 +1,9 @@
+{
+  "name": "eXpand-plugin",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "zip": "zip -r eXpand.zip manifest.json icons src popup -x '*.DS_Store'"
+  },
+  "private": true
+}

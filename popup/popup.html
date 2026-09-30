@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>eXpand</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <h1>eXpand</h1>
+    <label class="switch" title="Enable on X">
+      <input type="checkbox" id="enabled">
+      <span></span>
+    </label>
+  </header>
+
+  <section class="row">
+    <label for="fillWidth">Fill the window</label>
+    <label class="switch">
+      <input type="checkbox" id="fillWidth">
+      <span></span>
+    </label>
+  </section>
+
+  <section id="widthSection">
+    <label for="columnWidth">Column width <output id="columnWidthOut"></output></label>
+    <input type="range" id="columnWidth" min="600" max="1600" step="10">
+  </section>
+
+  <section>
+    <span class="label">Theme</span>
+    <div class="seg" data-key="theme">
+      <button data-value="x">X's own</button>
+      <button data-value="dim">Dim</button>
+    </div>
+    <div class="hint">Dim needs X set to “Lights out” (Settings → Display).</div>
+  </section>
+
+  <section>
+    <span class="label">Left navigation</span>
+    <div class="seg" data-key="leftNav">
+      <button data-value="icons">Icons only</button>
+      <button data-value="full">Full</button>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">Right sidebar</span>
+    <div class="seg" data-key="rightSidebar">
+      <button data-value="hide">Hide</button>
+      <button data-value="search">Search only</button>
+      <button data-value="show">Show</button>
+    </div>
+  </section>
+
+  <section>
+    <label for="mediaMaxHeight">Photo max height <output id="mediaMaxHeightOut"></output></label>
+    <input type="range" id="mediaMaxHeight" min="510" max="1400" step="10">
+  </section>
+
+  <section>
+    <span class="label">Portrait video crop</span>
+    <div class="seg" data-key="videoCrop">
+      <button data-value="none">Off</button>
+      <button data-value="3:4">Slight</button>
+      <button data-value="4:5">Medium</button>
+      <button data-value="1:1">Square</button>
+    </div>
+  </section>
+
+  <section class="row">
+    <label for="autoExpand">Auto-expand “Show more”</label>
+    <label class="switch">
+      <input type="checkbox" id="autoExpand">
+      <span></span>
+    </label>
+  </section>
+
+  <section id="thresholdSection">
+    <label for="expandMaxLines">…unless taller than <output id="expandMaxLinesOut"></output> lines</label>
+    <input type="range" id="expandMaxLines" min="5" max="60" step="1">
+  </section>
+
+  <section>
+    <span class="label">Declutter</span>
+    <div class="checks">
+      <label><input type="checkbox" data-key="hideAds"> Hide promoted posts</label>
+      <label><input type="checkbox" data-key="hideComposer"> Hide the composer on Home</label>
+      <label><input type="checkbox" data-key="hideTabBar"> Hide the feed tab bar</label>
+      <label><input type="checkbox" data-key="hideViews"> Hide view counts</label>
+      <label><input type="checkbox" data-key="hideCounts"> Hide reply / repost / like counts</label>
+      <label><input type="checkbox" data-key="hideGrokButton"> Hide the Grok button on posts</label>
+    </div>
+    <span class="label sub">Left nav items</span>
+    <div class="checks">
+      <label><input type="checkbox" data-key="hideNavGrok"> Grok</label>
+      <label><input type="checkbox" data-key="hideNavPremium"> Premium</label>
+      <label><input type="checkbox" data-key="hideNavCreatorStudio"> Creator Studio</label>
+      <label><input type="checkbox" data-key="hideNavHistory"> History</label>
+      <label><input type="checkbox" data-key="hideNavCommunities"> Communities</label>
+      <label><input type="checkbox" data-key="hideNavJobs"> Jobs</label>
+    </div>
+  </section>
+
+  <footer>Changes apply instantly. Reload X if the layout looks off.</footer>
+  <script src="popup.js"></script>
+</body>
+</html>
