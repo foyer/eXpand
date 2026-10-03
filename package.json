@@ -1,7 +1,7 @@
 {
   "name": "eXpand-plugin",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.9.0",
+  "description": "Chromium extension that widens X, enlarges media, auto-expands long posts and declutters the UI.",
   "scripts": {
     "zip": "zip -r eXpand.zip manifest.json icons src popup -x '*.DS_Store'"
   },
