@@ -136,6 +136,37 @@ html[data-expand-right="search"] [data-testid="sidebarColumn"] :is(
 .expand-cropped video {
   object-fit: cover !important;
 }
+/* Fullscreen: show the whole frame at its real shape, whichever element X fullscreens. */
+.expand-cropped video:fullscreen,
+.expand-cropped :fullscreen video,
+:fullscreen .expand-cropped video,
+.expand-cropped:fullscreen video {
+  object-fit: contain !important;
+}
+:fullscreen .expand-video-spacer,
+.expand-video-spacer:fullscreen {
+  padding-bottom: var(--expand-pb-orig) !important;
+}
+/* Per-video crop toggle, shown on hover */
+.expand-crop-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+[data-testid="tweetPhoto"]:hover > .expand-crop-toggle,
+.expand-crop-toggle:focus-visible {
+  opacity: 1;
+}
 /* Media scales with the column automatically; just make sure nothing re-clamps it. */
 html[data-expand-on] article [data-testid="tweetPhoto"],
 html[data-expand-on] article [data-testid="videoPlayer"],

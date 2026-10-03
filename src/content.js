@@ -174,9 +174,11 @@
     let ratio = natural;
 
     const target = CROP_RATIOS[settings.videoCrop];
-    const crop = !!target && natural < target - 0.01;
+    const croppable = !!target && natural < target - 0.01;
+    const crop = croppable && scope.dataset.expandNocrop !== '1'; // per-video override from the toggle button
     v.classList.toggle('expand-cropped', crop);
     if (crop) ratio = target;
+    if (croppable) ensureCropToggle(scope, v, crop);
 
     let a = pin.parentElement, n = 0;
     while (a && n < 10 && a.clientWidth <= w + 8) { a = a.parentElement; n++; }
@@ -194,7 +196,27 @@
     for (const sp of spacers) {
       sp.classList.add('expand-video-spacer');
       sp.style.setProperty('--expand-pb', `${(100 / ratio).toFixed(3)}%`);
+      sp.style.setProperty('--expand-pb-orig', sp.dataset.expandOrigPb || spacer.dataset.expandOrigPb); // restored in fullscreen
     }
+  }
+
+  // Small hover button on cropped videos: "Full" shows the whole frame, "Crop" re-crops.
+  function ensureCropToggle(scope, v, cropped) {
+    let btn = scope.querySelector(':scope > .expand-crop-toggle');
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'expand-crop-toggle';
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        scope.dataset.expandNocrop = scope.dataset.expandNocrop === '1' ? '0' : '1';
+        scaleVideo(v);
+      });
+      scope.appendChild(btn);
+    }
+    btn.textContent = cropped ? 'Full' : 'Crop';
+    btn.title = cropped ? 'Show the whole video frame' : 'Crop to the wider shape';
   }
 
   function scalePhoto(p) {
